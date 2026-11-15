@@ -1,0 +1,41 @@
+services:
+  numerology:              # 服务一：应用名
+    build:
+      context: .           # 用当前目录的 Dockerfile 构建镜像
+      dockerfile: Dockerfile
+    env_file:
+      - .env               # 把 .env 里的密钥自动注入容器
+    ports:
+      - "8001:8000"        # 宿主机8001 → 容器8000
+    environment:
+      - REDIS_URL=redis://redis:6379/6       # 告诉应用：Redis 在服务名 redis 的 6379，db=6
+      - OLLAMA_HOST=http://ollama:11434      # 告诉应用：Ollama 在服务名 ollama 的 11434
+    depends_on:
+      redis:
+        condition: service_started
+      ollama:
+        condition: service_started
+    volumes:
+      - ./chroma_db:/app/chroma_db            # 把本机知识库挂进容器（数据持久化）
+
+  redis:                   # 服务二：Redis
+    image: redis:latest    # 直接用官方镜像，不需要自己构建
+    ports:
+      - "6380:6379"        # 宿主机6380 → 容器6379（方便本地调试）
+
+  ollama:                  # 服务三：Ollama（本地嵌入模型 bge-m3）
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"      # 暴露 Ollama API 端口
+    volumes:
+      - ollama_data:/root/.ollama   # 模型数据持久化，不用每次重启都重新拉取
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        ollama serve &
+        sleep 5
+        ollama pull bge-m3
+        tail -f /dev/null
+
+volumes:
+  ollama_data:

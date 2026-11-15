@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+chroma_db/
+venv/
+node_modules/
+frontend/dist/
+.vscode/
+*.log
+_server_log.txt
