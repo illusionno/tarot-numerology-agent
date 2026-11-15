@@ -1,4 +1,4 @@
-# 星语 · 命理助手（agent_numerology）
+# 星语 · 命理助手
 
 > 温柔、亲切的「星语」陪你聊八字、紫微斗数、星座、风水、MBTI、解梦与塔罗。🌙
 
@@ -18,7 +18,10 @@
 
 ![alt text](image.png)
 
-![alt text](image-1.png)
+<img width="2880" height="1462" alt="image" src="https://github.com/user-attachments/assets/b7936455-d129-4a2a-9348-a6ffbf472681" />
+
+<img width="2880" height="1462" alt="fa626f841bff7da98cdd4af056ecf835" src="https://github.com/user-attachments/assets/00761774-823a-419d-ae8e-26b63f9f3b2f" />
+
 ### 各模块数据来源一览
 
 | 模块 | 数据来源 | 说明 |
@@ -91,7 +94,7 @@ cp .env.example .env   # Windows: copy .env.example .env
 | --- | --- | --- |
 | `DEEPSEEK_API_KEY` | DeepSeek 对话模型 | ✅ 是 |
 | `SERPAPI_API_KEY` | SerpAPI 联网搜索 | 可选 |
-| `YUANFENJU_API_KEY` | 缘份居命理接口（八字/紫微/星座/塔罗/解梦） | 相应模块需要 |
+| `YUANFENJU_API_KEY` | 缘份居命理接口（八字/紫微/星座/解梦） | 相应模块需要 |
 | `REDIS_URL` | Redis 地址，默认 `redis://127.0.0.1:6379/6` | 可选 |
 
 > ⚠️ **`.env` 含有真实密钥，务必不要提交到 Git。** 仓库已提供 `.gitignore` 排除它。
@@ -205,6 +208,15 @@ docker compose -p numerology up -d --build  # 重新构建镜像并启动（代�
 - **没有 Redis 报错吗？**：所有 Redis 读写都已做容错处理并设置 1 秒超时，未启动 Redis 时服务照常运行，仅会话历史不持久化。
 - **风水模块查不到内容**：先运行 `python insert_data_to_chroma.py` 初始化本地向量库（需本地 Ollama 已运行并已 `ollama pull bge-m3`）。
 - **塔罗模块查不到牌义**：先运行 `python insert_tarot_to_chroma.py` 初始化塔罗知识库（需本地 Ollama 已运行并已 `ollama pull bge-m3`）。
+
+## TODO
+- 移动端布局适配，字体有些大
+- 导入《周公解梦》，将解梦模块改成本地知识库查询+LLM 生成方式
+- 首页布局垂直居中，但是一到具体的模块对话页面，位置会有点向上偏移。首页模块卡片的字体层级不太清晰
+- 对话记录日期时间需要记录
+- 页面左右两侧有些空，如果加上可以符合主题的插画，效果应该会更好些。在切换到不同模块进行对话时，插画需要有个自然的过渡效果
+- 全局的对话字体样式改成可爱的手写体，应该会更有温度些，默认的方块字体给人一种有距离的感觉，但选择手写字体时，需要考虑易读性
+  （应该还会有些功能，等想到我再继续补充叭~~）
 
 ## 📄 License
 
